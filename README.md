@@ -1,3 +1,13 @@
+# Introduction
+
+This is an experimental web project when I'm learning flask by a flask book wrote by Miguel Grinberg.
+
+The main functions of this project is to draw diagrams on web:
+
+1. Flow chart
+2. Mindmap
+3. UML diagram: class diagram, sequence diagram, state diagram, etc.
+
 
 
 # environment prepare
