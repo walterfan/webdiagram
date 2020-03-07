@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% import "_macros.html" as macros %}
+
+{% block title %}Welcome - {{ user.username }}{% endblock %}
+
+{% block page_content %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<div class="page-header">
+ <h2>Diagrams</h2>
+    </div>
+
+  <div class="profile-header">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">diagram name</th>
+              <th scope="col">diagram type</th>
+              <th scope="col">script path</th>
+                <th scope="col">image path</th>
+                <th scope="col"><a href="{{ url_for('diagram.paint') }}">
+                                <i class="material-icons">
+                                note_add
+                                </i></a>
+                </th>
+            </tr>
+          </thead>
+        <tbody>
+        {% for diagram in diagrams %}
+            <tr>
+      <th scope="row">{{loop.index}}</th>
+      <td><a href="./static/{{ diagram['diagram_name']}}?{{ range(1, 1000) | random }}">{{ diagram['diagram_name'] }}</a></td>
+      <td>..</td><td>..</td><td>..</td>
+      <td>
+          <a href="diagrams?action=edit&diagramId={{ diagram['diagram_id'] }}" class="material-icons">&#xe3c9;</a>
+          <a href="diagrams?action=delete&diagramId={{ diagram['diagram_id'] }}" class="material-icons">&#xe92b;</a></td>
+    </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+</div>
+
+
+{% endblock %}

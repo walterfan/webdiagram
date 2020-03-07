@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% import "_macros.html" as macros %}
+
+{% block title %}Welcome - {{ user.username }}{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <div class="profile-header">
+
+<h1>Draw Diagram Easier</h1>
+
+<h2>Flow Chart</h2>
+<pre>
+start -> a;
+a -> b[label="yes"];
+a -> c[label="no"];
+b -> end;
+c -> end;
+</pre>
+
+<h2>Mindmap</h2>
+
+<pre>
+cql[label="CQL"];
+trait[label="Trait: No Joins, No referential integrity, denormalization"];
+cas[label="Cassandra"];
+arch[label="Architecture"];
+mod[label="Data Modeling"];
+
+
+cas -- cql;
+cas -- mod;
+cas -- arch;
+mod -- trait;
+</pre>
+
+<h2>Class diagram</h2>
+
+<pre>
+class task {
+    worker_id text,
+    time_slot text,
+    time timeuuid,
+    attributes text,
+    PRIMARY KEY ((worker_id, time_slot), time)
+}
+
+class task_time_slot {
+    worker_id text,
+    time_slot text,
+    PRIMARY KEY (worker_id, time_slot)
+}
+</pre>
+
+
+<h2>State diagram</h2>
+
+<pre>
+
+[*] --> IDLE
+IDLE -> COMPLETE
+IDLE -> COMPLETE_REPEATED
+COMPLETE_REPEATED -> IDLE
+IDLE -> FAILURE
+IDLE -> INTERRUPTED
+FAILURE --> [*]
+INTERRUPTED --> [*]
+COMPLETE --> [*]
+
+
+</pre>
+
+</div>
+
+</div>
+
+
+{% endblock %}

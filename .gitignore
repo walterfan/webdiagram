@@ -1,0 +1,11 @@
+.DS_Store
+.env
+.*~
+*~
+*.pyc
+*.o
+*.class
+venv/
+.idea/
+.ipynb_checkpoints/
+__pycache__/

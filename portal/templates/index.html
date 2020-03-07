@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}Web Diagram{% endblock %}
+
+{% block page_content %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+<div class="post-tabs">
+{% if current_user.is_authenticated %}
+
+
+<div class="page-header">
+ <h2>Diagrams</h2>
+    </div>
+
+  <div class="profile-header">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">diagram name</th>
+              <th scope="col">diagram type</th>
+              <th scope="col">script path</th>
+                <th scope="col">image path</th>
+                <th scope="col"><a href="{{ url_for('diagram.paint') }}">
+                                <i class="material-icons">
+                                note_add
+                                </i></a>
+                </th>
+            </tr>
+          </thead>
+        <tbody>
+        {% for diagram in diagrams %}
+            <tr>
+      <th scope="row">{{loop.index}}</th>
+      <td><a href="./static/{{ diagram['diagram_name']}}?{{ range(1, 1000) | random }}">{{ diagram['diagram_name'] }}</a></td>
+      <td>..</td><td>..</td><td>..</td>
+      <td>
+          <a href="diagrams?action=edit&diagramId={{ diagram['diagram_id'] }}" class="material-icons">&#xe3c9;</a>
+          <a href="diagrams?action=delete&diagramId={{ diagram['diagram_id'] }}" class="material-icons">&#xe92b;</a></td>
+    </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+</div>
+{% else %}
+
+ <div class="page-header">
+    <h1>Hello, {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}Guest{% endif %}!</h1>
+</div>
+
+{% endif %}
+
+</div>
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.index') }}
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
+{% endblock %}
