@@ -58,6 +58,23 @@ def list_diagram():
                            pagination=pagination, page=page)
 
 @login_required
+@diagram_module.route('/diagrams/<int:id>', methods=['GET'])
+def edit_diagram(id):
+    upload_form = UploadForm()
+    script_form = ScriptForm()
+    diagram = Diagram.query.filter_by(diagram_id=id).first()
+    if diagram:
+        script_form.script_content.data = diagram.diagram_script
+        script_form.diagram_name.data = diagram.diagram_name
+        script_form.diagram_type.data = diagram.diagram_type
+        script_form.diagram_id.data = diagram.diagram_id
+        aTag = Tag.query.filter_by(id=diagram.tag_id).first()
+        if aTag:
+            script_form.diagram_tag.data = aTag.name
+
+    return render_template('diagram.html', form=script_form, upload_form=upload_form, diagrams=[diagram])
+
+@login_required
 @diagram_module.route('/diagrams/<int:id>', methods=['DELETE'])
 def delete_diagram(id):
     diagram = Diagram.query.get_or_404(id)
@@ -93,17 +110,26 @@ def paint():
         script_form.diagram_content.data = painter.content
 
         if script_form.save_button.data:
-            diagram = Diagram()
+
+            diagram_id = script_form.diagram_id.data
+            if diagram_id:
+                diagram = Diagram.query.filter_by(diagram_id=diagram_id).first()
+            else:
+                diagram = Diagram()
             diagram.diagram_name = script_form.diagram_name.data
             diagram.diagram_script = script_form.script_content.data
             diagram.diagram_type = script_form.diagram_type.data
             diagram.image_path = script_form.diagram_path.data
             diagram.author_id = current_user.id
-            
-            tag = Tag.query().filter_by(name=script_form.diagram_tag.data)
+            tagName = script_form.diagram_tag.data
+            tag = Tag.query.filter_by(name=tagName).first()
             if not tag:
-                tag = Tag.query().first()
+                tag = Tag(name=tagName)
+                db.session.add(tag)
+                db.session.commit()
+
             diagram.tag_id = tag.id
+            diagram.diagram_id = script_form.diagram_id.data
 
             logger.info("save diagram {}".format(diagram))
             db.session.add(diagram)

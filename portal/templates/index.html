@@ -24,7 +24,7 @@
               <th scope="col">#</th>
               <th scope="col">diagram name</th>
               <th scope="col">diagram type</th>
-              <th scope="col">script path</th>
+              <th scope="col">diagram tag</th>
                 <th scope="col">image path</th>
                 <th scope="col"><a href="{{ url_for('diagram.paint') }}">
                                 <i class="material-icons">
@@ -37,8 +37,20 @@
         {% for diagram in diagrams %}
             <tr>
       <th scope="row">{{loop.index}}</th>
-      <td><a href="./static/{{ diagram['diagram_name']}}?{{ range(1, 1000) | random }}">{{ diagram['diagram_name'] }}</a></td>
-      <td>..</td><td>..</td><td>..</td>
+      <td><a href="{{ url_for('diagram.edit_diagram', id=diagram.diagram_id) }}">{{ diagram['diagram_name']  }}</a></td>
+      <td>
+          {% if diagram['diagram_type'] == '1' %}
+           Directed Graph
+          {% endif %}
+          {% if diagram['diagram_type'] == '2' %}
+           Undirected Graph
+          {% endif %}
+          {% if diagram['diagram_type'] == '3' %}
+           UML Graph
+          {% endif %}
+      </td>
+        <td>{{ diagram['tag_id'] }}</td>
+        <td><a href="./static/{{ diagram['diagram_name']}}?{{ range(1, 1000) | random }}">{{ diagram['diagram_name'] }}</a></td>
       <td>
           <a href="diagrams?action=edit&diagramId={{ diagram['diagram_id'] }}" class="material-icons">&#xe3c9;</a>
           <a href="diagrams?action=delete&diagramId={{ diagram['diagram_id'] }}" class="material-icons">&#xe92b;</a></td>

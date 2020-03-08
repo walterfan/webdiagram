@@ -36,11 +36,14 @@ class ScriptForm(FlaskForm):
                                coerce=int,
                                validators=[Optional()])
     submit_button = SubmitField('Generate', render_kw={"class": "btn btn-primary"})
-    save_button = SubmitField('Save', render_kw={"class": "btn btn-primary"})
+
     diagram_name = StringField('diagram_name', validators=[DataRequired(), Length(1, 256)],
                                default=default_file_name, render_kw={"class": "form-control"})
     diagram_tag = StringField('diagram_tag', validators=[DataRequired(), Length(1, 256)],
                                default='diagram', render_kw={"class": "form-control"})
     diagram_path = HiddenField('diagram_path')
     diagram_content = HiddenField('diagram_content')
+    diagram_id = HiddenField('diagram_id')
+
     load_button = FileField('load', render_kw={"class": "btn btn-primary"})
+    save_button = SubmitField('Save', render_kw={"class": "btn btn-primary"})
