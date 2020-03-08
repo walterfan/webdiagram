@@ -23,8 +23,22 @@ pip install -r requirements.txt
 source setenv.sh
 ```
 
+## create your environment file
 
-# DB migration
+```
+# vi .env
+
+FLASK_APP=app
+
+MAIL_SERVER = smtp.163.com
+MAIL_PORT = 465
+MAIL_USE_SSL = true
+MAIL_USE_TLS = false
+MAIL_USERNAME = ***@163.com
+MAIL_PASSWORD = ******
+```
+
+## DB migration
 
 ```
 
