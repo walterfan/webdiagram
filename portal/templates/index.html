@@ -52,7 +52,7 @@
         <td>{{ diagram['tag_id'] }}</td>
         <td><a href="./static/{{ diagram['diagram_name']}}?{{ range(1, 1000) | random }}">{{ diagram['diagram_name'] }}</a></td>
       <td>
-          <a href="diagrams?action=edit&diagramId={{ diagram['diagram_id'] }}" class="material-icons">&#xe3c9;</a>
+          <a href="{{ url_for('diagram.edit_diagram', id=diagram.diagram_id) }}" class="material-icons">&#xe3c9;</a>
           <a href="diagrams?action=delete&diagramId={{ diagram['diagram_id'] }}" class="material-icons">&#xe92b;</a></td>
     </tr>
             {% endfor %}
