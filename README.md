@@ -95,8 +95,6 @@ then generate the following diagram
 
 ![](./examples/tcp-handshake.png)
 
-## State diagram
-
 
 # Quick start
 ## 1) prepare environment
