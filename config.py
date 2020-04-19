@@ -13,6 +13,8 @@ class Config:
     MAIL_SUBJECT_PREFIX = '[webdiagram]'
     MAIL_SENDER = os.environ.get('MAIL_USERNAME')
 
+    ADMIN_DEFAULT_EMAIL = os.environ.get('ADMIN_DEFAULT_EMAIL')
+    ADMIN_DEFAULT_PASSWORD = os.environ.get('ADMIN_DEFAULT_PASSWORD')
     PAGE_SIZE = 20
 
     @staticmethod

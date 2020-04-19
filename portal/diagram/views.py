@@ -116,6 +116,7 @@ def paint():
                 diagram = Diagram.query.filter_by(diagram_id=diagram_id).first()
             else:
                 diagram = Diagram()
+            logger.info("save {}, {}".format(script_form.diagram_id.data, script_form.diagram_name.data))
             diagram.diagram_name = script_form.diagram_name.data
             diagram.diagram_script = script_form.script_content.data
             diagram.diagram_type = script_form.diagram_type.data
@@ -129,7 +130,7 @@ def paint():
                 db.session.commit()
 
             diagram.tag_id = tag.id
-            diagram.diagram_id = script_form.diagram_id.data
+
 
             logger.info("save diagram {}".format(diagram))
             db.session.add(diagram)
@@ -137,6 +138,6 @@ def paint():
 
     else:
         logger.info(script_form.errors)
+        #flash(script_form.errors, 'error')
 
-    diagrams = Diagram.query.all()
-    return render_template('diagram.html', form=script_form, upload_form=upload_form, diagrams=diagrams)
+    return render_template('diagram.html', form=script_form, upload_form=upload_form)

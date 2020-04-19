@@ -127,12 +127,13 @@ class Painter(object):
     def draw_uml(self, script_content):
 
         script_file = "{}/{}".format(self.path, self.name)
-        if script_file.endswith(".png"):
+        if not script_file.endswith(".txt"):
             script_file = script_file[:-4] + ".txt"
 
         with open(script_file, "w") as fp:
-            fp.write("@startuml\n{}\n@enduml\n".format(script_content.replace('\r\n', '\n')))
-
+            if not script_content.startswith("@startuml"):
+                script_content = "@startuml\n{}\n@enduml\n".format(script_content.replace('\r\n', '\n'))
+            fp.write(script_content)
         logger.info("draw %s" % script_file)
         cmd = "java -jar plantuml.jar %s" % script_file
         logger.info("execute {}".format(cmd))

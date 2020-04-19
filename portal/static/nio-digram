@@ -1,0 +1,19 @@
+digraph {
+    label="";
+    node [shape="box"];
+
+    
+
+    	NIO -> Channel;
+	NIO -> Buffer;
+	NIO -> Selector;
+	Buffer -> ByteBuffer;
+	Buffer -> CharBuffer;
+	Buffer -> MappedByteBuffer;
+	Channel -> FileChannel;
+	Channel -> DatagramChannel;
+	Channel -> SocketChannel;
+	Channel -> ServerSocketChannel;
+
+
+}

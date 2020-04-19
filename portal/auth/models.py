@@ -201,6 +201,18 @@ class User(db.Model, UserMixin):
             return None
         return User.query.get(data['id'])
 
+    @staticmethod
+    def insert_admin():
+        user = User()
+        user.username = 'admin'
+        user.password = current_app.config['ADMIN_DEFAULT_PASSWORD']
+        user.name = 'administrator'
+        user.confirmed = True
+        user.email = current_app.config['ADMIN_DEFAULT_EMAIL']
+        user.role = Role.query.filter_by(name='Administrator').first()
+        db.session.add(user)
+        db.session.commit()
+
     def __repr__(self):
         return "<User username={}, email={}, password_hash={}, name={}, confirmed={}".format(
             self.username,

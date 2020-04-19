@@ -1,0 +1,9 @@
+start -> IsExceedMaxAttempts
+IsExceedMaxAttempts -> Login[cond=no]
+IsExceedMaxAttempts -> LockAccount[cond=yes]
+LockAccount -> DisplayAlert
+Login -> IsAuthorized
+IsAuthorized -> GrantAccess[cond="yes"]
+IsAuthorized -> IsExceedMaxAttempts[cond="no"]
+GrantAccess -> end
+DisplayAlert -> end

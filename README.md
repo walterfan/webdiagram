@@ -8,9 +8,98 @@ The main functions of this project is to draw diagrams on web:
 2. Mindmap
 3. UML diagram: class diagram, sequence diagram, state diagram, etc.
 
+# Examples
+There are two methods to generate diagram 
+
+1) Web gui
+2) Command line
+
+## Mindmap
+write a script as below
+
+```
+NIO -> Channel
+NIO -> Buffer
+NIO -> Selector
+Buffer -> ByteBuffer
+Buffer -> CharBuffer
+Buffer -> MappedByteBuffer
+Channel -> FileChannel
+Channel -> DatagramChannel
+Channel -> SocketChannel
+Channel -> ServerSocketChannel
+
+```
+
+then generate the following diagram
+
+![](examples/nio-mindmap.png)
 
 
-# environment prepare
+
+## Flow Chart
+* Login flow chart
+
+write a script as below
+
+```
+start -> IsExceedMaxAttempts
+IsExceedMaxAttempts -> Login[cond=no]
+IsExceedMaxAttempts -> LockAccount[cond=yes]
+LockAccount -> DisplayAlert
+Login -> IsAuthorized
+IsAuthorized -> GrantAccess[cond="yes"]
+IsAuthorized -> IsExceedMaxAttempts[cond="no"]
+GrantAccess -> end
+DisplayAlert -> end
+```
+
+```shell script
+fab draw:./examples/login-flowchart.txt,./examples/login-flowchart.png
+```
+
+then generate the following chart
+
+![](./examples/login-flowchart.png)
+
+## Sequence diagram
+
+* tcp handshake
+
+write a script as below
+
+```
+title TCP handshake
+
+autonumber "<b>[00]"
+
+== open ==
+
+client -> server: SYN
+server --> client: ACK/SYN
+server -> client: ACK
+note right of client: connection established
+
+== close ==
+
+client -> server: FIN
+server --> client: ACK
+server -> client: FIN
+client --> server: ACK
+note left of server #FFAAAA: connection disconnected
+
+
+```
+
+then generate the following diagram
+
+![](./examples/tcp-handshake.png)
+
+## State diagram
+
+
+# Quick start
+## 1) prepare environment
 
 ```
 
@@ -23,7 +112,7 @@ pip install -r requirements.txt
 source setenv.sh
 ```
 
-## create your environment file
+## 2) create your environment file
 
 ```
 # vi .env
@@ -36,31 +125,26 @@ MAIL_USE_SSL = true
 MAIL_USE_TLS = false
 MAIL_USERNAME = ***@163.com
 MAIL_PASSWORD = ******
-```
 
-## DB migration
-
-```
-
-flask db init
-flask db migrate -m "init tables"
-flask db  upgrade
-# upgrade and insert default roles
-flask deploy
-```
-
-
-## flask shell
+ADMIN_DEFAULT_EMAIL=***@163.com
+ADMIN_DEFAULT_PASSWORD = ********
 
 ```
-flask shell
->>> user = User.query.all()
+
+## 3) create the db schema and initial data
 
 ```
-# environment variables
+fab init_db
+```
 
-.env for sensitive config
-.flaskenv for public config
+## 4) start debug server
+
+```shell script
+run server
+```
+
+## 5) login 
+open http://localhost:5000 and login with the default administrar account as above
 
 # FAQ
 ## how to start app?
@@ -77,4 +161,17 @@ flask run --host=0.0.0.0 --port=8000 &
 sqlite3 web-diagram-dev.db
 sqlite> .schema
 sqlite> .quit 
+```
+## how to run test
+
+```shell script
+flask test
+```
+
+## how to run embed shell
+
+```
+flask shell
+>>> user = User.query.all()
+
 ```

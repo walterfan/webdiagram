@@ -78,6 +78,7 @@ def deploy():
     # create or update user roles
     Role.insert_roles()
     Tag.insert_tags()
+    User.insert_admin()
 
 if __name__ == "__main__":
     app.run(port=8000, debug=True)

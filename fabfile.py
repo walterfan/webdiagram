@@ -4,7 +4,7 @@ from flask_mail import Message
 import pprint
 from app import app
 from portal import mail
-from portal.diagram.models import Diagram
+from portal.diagram.painter import Painter
 from portal.auth.models import User, Role
 import os
 import hashlib
@@ -46,14 +46,15 @@ def dump_config():
 
 
 @task
-def create_db():
+def init_db():
 	run_cmd('flask db init')
 	run_cmd('flask db migrate -m "init tables"')
-	run_cmd('flask db upgrade')
+	run_cmd('flask deploy')
 
 @task
-def init_db():
-	run_cmd('flask deploy')
+def upgrade_db():
+	run_cmd('flask db migrate -m "update tables"')
+	run_cmd('flask db upgrade')
 
 @task
 def runserver(port=5000):
@@ -92,3 +93,23 @@ def send_mail(recipient='fanyamin@hotmail.com', subject="Don't forget practice",
 		msg.body = body
 		msg.html = "<p>Dear Walter, </p><p>{}</p><p>Regards,<br/>Walter</p>".format(body)
 		mail.send(msg)
+
+@task
+def draw_graph(script_file, image_file):
+	painter = Painter(os.path.basename(image_file))
+	painter.path = os.path.dirname(image_file)
+
+	with open(script_file, 'r') as fp:
+		script_content = fp.read()
+
+	painter.draw_graph(script_content)
+
+@task
+def draw_uml(script_file, image_file):
+	painter = Painter(os.path.basename(image_file))
+	painter.path = os.path.dirname(image_file)
+
+	with open(script_file, 'r') as fp:
+		script_content = fp.read()
+
+	painter.draw_uml(script_content)

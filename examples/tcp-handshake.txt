@@ -1,0 +1,20 @@
+
+title TCP handshake
+
+autonumber "<b>[00]"
+
+== open ==
+
+client -> server: SYN
+server --> client: ACK/SYN
+server -> client: ACK
+note right of client: connection established
+
+== close ==
+
+client -> server: FIN
+server --> client: ACK
+server -> client: FIN
+client --> server: ACK
+note left of server #FFAAAA: connection disconnected
+

@@ -74,12 +74,14 @@
         </div>
 
         {% if form.diagram_path.data is not none and "png" in form.diagram_path.data %}
-             <img src="./static/{{ form.diagram_path.data }}?{{ range(1, 1000) | random }}"/>
+             <img src="/static/{{ form.diagram_path.data }}?{{ range(1, 1000) | random }}"/>
 
         {% endif %}
 
 
         {% if form.diagram_content.data is not none %}
+
+            {% if 'digraph' in form.diagram_content.data %}
         <script>
         var dot_script = '{{ form.diagram_content.data | safe }}'
         console.log(dot_script)
@@ -87,6 +89,11 @@
             .fade(false)
             .renderDot(dot_script);
         </script>
+                {% else  %}
+                <div class="form-group">
+                  <textarea rows="10" cols="120" class="textbox">{{ form.diagram_content.data }}</textarea>
+                </div>
+            {% endif %}
         {% endif %}
       <hr/>
 
