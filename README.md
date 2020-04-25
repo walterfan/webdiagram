@@ -70,24 +70,31 @@ write a script as below
 
 ```
 title TCP handshake
-
+participant client
+participant server
 autonumber "<b>[00]"
 
 == open ==
-
+note right of server: LISTEN
 client -> server: SYN
+note left of client: SYN_SENT
+note right of server: SYN_RCVD
 server --> client: ACK/SYN
 server -> client: ACK
-note right of client: connection established
+note over client, server: ESTABILISHED
 
 == close ==
 
 client -> server: FIN
+note left of client: FIN_WAIT_1
+note right of server: CLOSE_WAIT
 server --> client: ACK
+note left of client: FIN_WAIT_2
 server -> client: FIN
+note right of server: LAST_ACK
+note left of client: TIME_WAIT
 client --> server: ACK
-note left of server #FFAAAA: connection disconnected
-
+note right of server #FFAAAA: CLOSED
 
 ```
 
@@ -95,6 +102,23 @@ then generate the following diagram
 
 ![](./examples/tcp-handshake.png)
 
+
+## State diagram
+
+```
+
+[*] --> Created: new
+Created --> Ready: start
+Ready --> Running: run
+Running --> Ready: yield, interrupt
+Running --> Waiting: wait, sleep, suspend
+Waiting --> Ready: notify, resume
+Running --> Terminated
+Terminated --> [*]
+
+```
+
+![](./examples/thread-state.png)
 
 # Quick start
 ## 1) prepare environment
