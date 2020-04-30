@@ -68,6 +68,7 @@ def edit_diagram(id):
         script_form.diagram_name.data = diagram.diagram_name
         script_form.diagram_type.data = diagram.diagram_type
         script_form.diagram_id.data = diagram.diagram_id
+        script_form.diagram_path.data = diagram.image_path
         aTag = Tag.query.filter_by(id=diagram.tag_id).first()
         if aTag:
             script_form.diagram_tag.data = aTag.name
