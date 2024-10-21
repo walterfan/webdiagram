@@ -1,6 +1,5 @@
-from fabric.api import *
-from fabric.context_managers import *
-from flask_mail import Message
+from fabric import task
+from fabric import Connection
 import pprint
 from app import app
 from portal import mail
@@ -20,49 +19,50 @@ if os.path.exists(dotenv_path):
 
 pp = pprint.PrettyPrinter(indent=4)
 
-#withSudo="sudo "
-def run_cmd(cmd, withSudo=""):
-	print(withSudo + cmd)
-	local(withSudo + cmd)
+DEFAULT_HOSTS = ["localhost"]
 
-@task
+#withSudo="sudo "
+def run_cmd(c, cmd, withSudo=""):
+	print(withSudo + cmd)
+	c.local(withSudo + cmd)
+
+@task(hosts=DEFAULT_HOSTS)
 def md5(message):
 	m = hashlib.md5()
 	m.update(message.encode('utf-8'))
 	return m.digest()
 
-@task
+@task(hosts=DEFAULT_HOSTS)
 def base64_encode(message):
 	return base64.b64encode(bytes(message, 'utf-8')).decode('utf-8')
 
-@task
+@task(hosts=DEFAULT_HOSTS)
 def base64_decode(message):
 	return base64.b64decode(message).decode('utf-8')
 
-@task
-def dump_config():
+@task(hosts=DEFAULT_HOSTS)
+def dump_config(c):
 	with app.app_context():
 		pp.pprint(app.config)
 
 
-@task
-def init_db():
-	run_cmd('flask db init')
-	run_cmd('flask db migrate -m "init tables"')
-	run_cmd('flask deploy')
+@task(hosts=DEFAULT_HOSTS)
+def init_db(c):
+	run_cmd(c, 'flask db init')
+	run_cmd(c, 'flask db migrate -m "init tables"')
+	run_cmd(c, 'flask deploy')
 
-@task
-def upgrade_db():
-	run_cmd('flask db migrate -m "update tables"')
-	run_cmd('flask db upgrade')
+@task(hosts=DEFAULT_HOSTS)
+def upgrade_db(c):
+	run_cmd(c, 'flask db migrate -m "update tables"')
+	run_cmd(c, 'flask db upgrade')
 
-@task
-def runserver(port=5000):
-	with shell_env(FLASK_DEBUG='1', FLASK_APP='app.py'):
-		local("flask run --port  %s" % port)
+@task(hosts=DEFAULT_HOSTS)
+def runserver(c, port=5000):
+	c.local("flask run --port  %s" % port)
 
-@task
-def list_user():
+@task(hosts=DEFAULT_HOSTS)
+def list_user(c):
 	with app.app_context():
 		roles = Role.query.all()
 		print("-" * 100)
@@ -83,8 +83,8 @@ def list_user():
 			for diagram in diagrams:
 				print("{}".format(diagram))
 
-@task
-def send_mail(recipient='fanyamin@hotmail.com', subject="Don't forget practice", body='Practice makes Perfect'):
+@task(hosts=DEFAULT_HOSTS)
+def send_mail(c, recipient='fanyamin@hotmail.com', subject="Don't forget practice", body='Practice makes Perfect'):
 
 	with app.app_context():
 		sender = app.config['MAIL_SENDER']
@@ -94,7 +94,7 @@ def send_mail(recipient='fanyamin@hotmail.com', subject="Don't forget practice",
 		msg.html = "<p>Dear Walter, </p><p>{}</p><p>Regards,<br/>Walter</p>".format(body)
 		mail.send(msg)
 
-@task
+@task(hosts=DEFAULT_HOSTS)
 def draw_graph(script_file, image_file):
 	painter = Painter(os.path.basename(image_file))
 	painter.path = os.path.dirname(image_file)
@@ -104,7 +104,7 @@ def draw_graph(script_file, image_file):
 
 	painter.draw_graph(script_content)
 
-@task
+@task(hosts=DEFAULT_HOSTS)
 def draw_uml(script_file, image_file):
 	painter = Painter(os.path.basename(image_file))
 	painter.path = os.path.dirname(image_file)

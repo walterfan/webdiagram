@@ -32,7 +32,7 @@ def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
     pagination = user.diagrams.order_by(Diagram.update_time.desc()).paginate(
-        page, per_page=current_app.config['PAGE_SIZE'],
+        page=page, per_page=current_app.config['PAGE_SIZE'],
         error_out=False)
     posts = pagination.items
     return render_template('user.html', user=user, posts=posts,

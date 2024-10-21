@@ -12,7 +12,7 @@ class Diagram {
   DateTime updateTime
 }
 """
-diagram_tag_table = db.Table()
+#diagram_tag_table = db.Table()
 
 
 class Diagram(db.Model):
