@@ -36,7 +36,7 @@ Flask-SQLAlchemy==3.1.1
 Flask-WTF==1.2.1
 graphviz==0.13.2
 html5lib==0.999999999
-idna==3.6
+idna==3.7
 invoke==2.2.0
 ipython==8.12.3
 itsdangerous==2.1.2
