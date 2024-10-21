@@ -81,7 +81,7 @@ soupsieve==2.5
 SQLAlchemy==2.0.29
 stack-data==0.6.3
 tinycss2==1.2.1
-tornado==6.4
+tornado==6.4.1
 traitlets==5.14.2
 typing_extensions==4.10.0
 urllib3==2.2.1
